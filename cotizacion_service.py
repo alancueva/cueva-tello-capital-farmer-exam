@@ -6,9 +6,9 @@ class CotizacionService:
     def __init__(self, db):
         self.db = db
         self.precios = {
-            'Constitución de empresa - S/ 1,500': 1500,
-            'Defensa laboral - S/ 2,000': 2000,
-            'Consultoría tributaria - S/ 800': 800
+            'Constitución de empresa': 1500,
+            'Defensa laboral': 2000,
+            'Consultoría tributaria': 800
         }
 
     """Genera un código único para la cotización."""
