@@ -34,7 +34,13 @@ class CotizacionService:
             )
             return {
                 'success': True,
-                'descripcion': "Cotización registrada correctamente."
+                'descripcion': "Cotización registrada correctamente.",
+                'numero': numero,
+                'nombre': data['nombre'],
+                'email': data['email'],
+                'servicio': servicio,
+                'precio': precio,
+                'fecha': fecha
             }
         except Exception as e:
             return {

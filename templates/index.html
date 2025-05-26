@@ -68,7 +68,9 @@
                     <h3 id="modal-title">¡Cotización Generada!</h3>
                 </div>
                 <div class="modal-body">
-                    <p id="modal-description">Tu solicitud de cotización ha sido enviada exitosamente.</p>
+                    <div id="modal-description">
+                        
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" onclick="closeModal()" class="modal-btn">
@@ -86,9 +88,9 @@
 
     <script>
         // Mostrar y ocultar el modal
-        function showModal(title, description) {
+        function showModal(title, htmlContent) {
             document.getElementById('modal-title').textContent = title;
-            document.getElementById('modal-description').textContent = description;
+            document.getElementById('modal-description').innerHTML = htmlContent;
             document.getElementById('modal').style.display = 'block';
         }
         function closeModal() {
@@ -96,6 +98,8 @@
         }
 
         // Envío AJAX del formulario
+        // Escuchar el evento de envío del formulario
+        // y enviar los datos usando fetch
         document.getElementById('cotizacionForm').addEventListener('submit', function(e) {
             e.preventDefault();
             const form = e.target;
@@ -106,15 +110,28 @@
             })
             .then(response => response.json())
             .then(data => {
-                // Puedes personalizar el mensaje según la respuesta
+                let html = '';
+                if(data.success) {
+                    html = `
+                        <strong>${data.descripcion}</strong><br><br>
+                        <b>N° Cotización:</b> ${data.numero}<br>
+                        <b>Nombre:</b> ${data.nombre}<br>
+                        <b>Email:</b> ${data.email}<br>
+                        <b>Servicio:</b> ${data.servicio}<br>
+                        <b>Precio:</b> S/ ${data.precio}<br>
+                        <b>Fecha:</b> ${data.fecha}
+                    `;
+                } else {
+                    html = `<span style='color:red;'>${data.descripcion}</span>`;
+                }
                 showModal(
                     data.success ? '¡Cotización Generada!' : 'Error',
-                    data.descripcion || 'Tu solicitud de cotización ha sido enviada exitosamente.'
+                    html
                 );
                 if(data.success) form.reset();
             })
             .catch(() => {
-                showModal('Error', 'Ocurrió un error al procesar la cotización.');
+                showModal('Error', '<span style="color:red;">Ocurrió un error al procesar la cotización.</span>');
             });
         });
     </script>
