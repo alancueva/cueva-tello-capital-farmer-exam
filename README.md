@@ -1,5 +1,7 @@
 # Sistema de Cotizaciones - Capital & Farmer
 
+![Captura de pantalla](static/img/captura.png)
+
 Este proyecto es una aplicación web desarrollada con Flask que permite a los usuarios solicitar cotizaciones para servicios jurídicos de manera sencilla y rápida. Los datos de las cotizaciones se almacenan en una base de datos SQLite para su posterior consulta y gestión.
 
 ## Características
