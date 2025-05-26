@@ -70,4 +70,4 @@ Puedes modificar los servicios y precios en el archivo `cotizacion_service.py` d
 
 ## Licencia
 
-Este proyecto es de uso académico y puede ser adaptado para otros fines.
+Este proyecto está licenciado bajo los términos de la [licencia MIT](LICENSE).
