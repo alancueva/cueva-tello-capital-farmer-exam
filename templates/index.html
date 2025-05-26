@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario de Cotización</title>
+     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="icon-wrapper">
+                <i class="fas fa-balance-scale"></i>
+            </div>
+            <h1>Cotización Legal</h1>
+            <p class="subtitle">Solicita tu consulta jurídica profesional</p>
+        </div>
+        
+        <form class="form-container" action="/cotizar" method="post" id="cotizacionForm">
+            <div class="form-group">
+                <label for="nombre">
+                    <i class="fas fa-user"></i>
+                    Nombre del cliente
+                </label>
+                <input type="text" id="nombre" name="nombre" placeholder="Ingresa tu nombre completo" required>
+            </div>
+
+            <div class="form-group">
+                <label for="email">
+                    <i class="fas fa-envelope"></i>
+                    Correo electrónico
+                </label>
+                <input type="email" id="email" name="email" placeholder="ejemplo@correo.com" required>
+            </div>
+
+            <div class="form-group">
+                <label for="servicio">
+                    <i class="fas fa-briefcase"></i>
+                    Tipo de servicio
+                </label>
+                <select id="servicio" name="servicio" required>
+                    <option value="">Selecciona un servicio</option>
+                    <option value="Constitución de empresa">Constitución de empresa - S/ 1,500</option>
+                    <option value="Defensa laboral">Defensa laboral - S/ 2,000</option>
+                    <option value="Consultoría tributaria">Consultoría tributaria - S/ 800</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="descripcion">
+                    <i class="fas fa-file-alt"></i>
+                    Descripción del caso
+                </label>
+                <textarea id="descripcion" name="descripcion" placeholder="Describe detalladamente tu caso o consulta legal..." rows="5" required></textarea>
+            </div>
+
+            <button type="submit" class="submit-btn">
+                <i class="fas fa-calculator"></i>
+                Generar Cotización
+            </button>
+        </form>
+        
+        <div id="modal" class="modal">
+            <div class="modal-content">
+                <div id="modal-header" class="modal-header">
+                    <i id="modal-icon" class="fas fa-check-circle"></i>
+                    <h3 id="modal-title">¡Cotización Generada!</h3>
+                </div>
+                <div class="modal-body">
+                    <p id="modal-description">Tu solicitud de cotización ha sido enviada exitosamente.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" onclick="closeModal()" class="modal-btn">
+                        <i class="fas fa-times"></i>
+                        Cerrar
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p><i class="fas fa-shield-alt"></i> Confidencialidad garantizada</p>
+        </div>
+    </div>
+
+    <script>
+        // Mostrar y ocultar el modal
+        function showModal(title, description) {
+            document.getElementById('modal-title').textContent = title;
+            document.getElementById('modal-description').textContent = description;
+            document.getElementById('modal').style.display = 'block';
+        }
+        function closeModal() {
+            document.getElementById('modal').style.display = 'none';
+        }
+
+        // Envío AJAX del formulario
+        document.getElementById('cotizacionForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const form = e.target;
+            const formData = new FormData(form);
+            fetch('/cotizar', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Puedes personalizar el mensaje según la respuesta
+                showModal(
+                    data.success ? '¡Cotización Generada!' : 'Error',
+                    data.descripcion || 'Tu solicitud de cotización ha sido enviada exitosamente.'
+                );
+                if(data.success) form.reset();
+            })
+            .catch(() => {
+                showModal('Error', 'Ocurrió un error al procesar la cotización.');
+            });
+        });
+    </script>
+</body>
+</html>
