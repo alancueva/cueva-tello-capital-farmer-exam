@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request, jsonify
-from database import Database
-from cotizacion_service import CotizacionService
+from service.database import Database
+from service.cotizacion_service import CotizacionService
 
 app = Flask(__name__)
 
